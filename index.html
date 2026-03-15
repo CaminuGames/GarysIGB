@@ -29,7 +29,7 @@
             font-size: 12px;
         }
 
-        /* Drift animation for background */
+        /* Drifting Star Background */
         .stars {
             position: fixed;
             top: 0;
@@ -50,7 +50,7 @@
             to { background-position: -600px 600px; }
         }
 
-        /* Scanline Overlay */
+        /* Purple Scanlines */
         body::before {
             content: '';
             position: fixed;
@@ -82,11 +82,19 @@
             justify-content: center;
         }
 
-        .animated-logo {
+        /* STATIC LOGO STYLING */
+        .static-logo {
             width: 640px;
             height: auto;
-            image-rendering: pixelated; /* Essential for pixel-perfect GIF scaling */
+            image-rendering: pixelated; 
             filter: drop-shadow(0 0 15px var(--purple-rain));
+            /* Giving it a "Floating in Space" feel since it's no longer animated */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         .video-container {
@@ -211,7 +219,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="./GarysTitle.gif" alt="Gary & Bill's Logo" class="animated-logo">
+            <img src="./logo.png" alt="Gary & Bill's: Intergalactic Booty Grab" class="static-logo">
         </div>
 
         <div class="video-container">
@@ -259,7 +267,6 @@
             }
         });
 
-        // Simple Fade-in Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
