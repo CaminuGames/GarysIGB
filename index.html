@@ -7,12 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
-        /* Color Variables */
         :root {
-            --purple-rain: #4B0082; /* Deep Royal Purple */
-            --gold: #FFD700;        /* Gold Accents */
+            --purple-rain: #4B0082;
+            --gold: #FFD700;
             --white: #FFFFFF;
-            --soft-gold: rgba(255, 215, 0, 0.2);
             --pixel-font: 'Press Start 2P', cursive;
         }
 
@@ -27,10 +25,11 @@
             color: var(--white);
             font-family: var(--pixel-font);
             overflow-x: hidden;
-            line-height: 1.8; /* Increased for readability with pixel fonts */
+            line-height: 1.8;
             font-size: 12px;
         }
 
+        /* Drift animation for background */
         .stars {
             position: fixed;
             top: 0;
@@ -51,6 +50,25 @@
             to { background-position: -600px 600px; }
         }
 
+        /* Scanline Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(75, 0, 130, 0.1),
+                rgba(75, 0, 130, 0.1) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 999;
+        }
+
         header {
             text-align: center;
             padding: 60px 20px 20px;
@@ -58,7 +76,6 @@
             margin: 0 auto;
         }
 
-        /* LOGO STYLING */
         .logo-container {
             margin-bottom: 30px;
             display: flex;
@@ -68,9 +85,8 @@
         .animated-logo {
             width: 640px;
             height: auto;
-            image-rendering: pixelated;
+            image-rendering: pixelated; /* Essential for pixel-perfect GIF scaling */
             filter: drop-shadow(0 0 15px var(--purple-rain));
-            animation: fadeInUp 1s ease forwards;
         }
 
         .video-container {
@@ -108,17 +124,10 @@
             border-left: 6px solid var(--gold);
             padding: 30px;
             margin: 50px 0;
-            box-shadow: 0 0 20px rgba(75, 0, 130, 0.4);
         }
 
-        .story p {
-            margin-bottom: 25px;
-            font-size: 11px;
-        }
-
-        .story p strong {
-            color: var(--gold);
-        }
+        .story p { margin-bottom: 25px; font-size: 11px; }
+        .story p strong { color: var(--gold); }
 
         .quote {
             color: var(--white);
@@ -126,7 +135,7 @@
             padding: 15px;
             border: 1px dashed var(--purple-rain);
             font-size: 10px;
-            line-height: 2;
+            line-height: 1.6;
         }
 
         .quote-attribution {
@@ -149,13 +158,11 @@
             border: 2px solid var(--purple-rain);
             padding: 20px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
         .stat-box:hover {
-            transform: translateY(-5px);
             border-color: var(--gold);
-            box-shadow: 0 0 20px var(--soft-gold);
         }
 
         .stat-number {
@@ -163,27 +170,24 @@
             color: var(--gold);
             display: block;
             margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--purple-rain);
         }
 
         .stat-label {
             color: var(--white);
             font-size: 8px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .cta-section {
             text-align: center;
-            margin: 80px 0 40px;
+            margin: 80px 0;
         }
 
         .cta-text {
             font-size: 16px;
             color: var(--gold);
-            text-transform: uppercase;
             letter-spacing: 2px;
-            animation: pulse 2s infinite;
+            text-shadow: 0 0 10px var(--purple-rain);
         }
 
         footer {
@@ -196,53 +200,25 @@
             margin: 60px auto 0;
         }
 
-        /* PURPLE SCANLINE EFFECT */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(75, 0, 130, 0.1),
-                rgba(75, 0, 130, 0.1) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-            z-index: 999;
-        }
-
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-            100% { opacity: 1; transform: scale(1); }
-        }
     </style>
 </head>
-
 <body>
     <div class="stars"></div>
 
     <header>
         <div class="logo-container">
-            <img src="GarysLogoAnim.gif" alt="Gary & Bill's Logo" class="animated-logo">
+            <img src="./GarysLogoAnim.gif" alt="Gary & Bill's Logo" class="animated-logo">
         </div>
 
         <div class="video-container">
             <video id="gameplay-video" autoplay loop muted playsinline>
                 <source src="GarysGamePlayWebsite.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
         </div>
-
         <div id="unmute-message">AUDIO FEED ACTIVE</div>
     </header>
 
@@ -250,37 +226,18 @@
         <div class="story">
             <p><strong>The audit is over. The cosmic embezzlement begins.</strong></p>
             <p>In the year 4080, Gary Merwitch was sent to retrieve what was lost. A fortune in gold coins, hidden deep within an abandoned alien facility.</p>
-
             <div class="quote">
                 "Twelve years in deep space, and I've become your best friend. A knife. Marvelous."
                 <span class="quote-attribution">— Bill</span>
             </div>
-
             <p>Three hundred coins. Ten treacherous levels. And something very, very wrong below the surface.</p>
-
-            <div class="quote">
-                "Welcome to the ass-end of the galaxy, mate."
-                <span class="quote-attribution">— Bill</span>
-            </div>
         </div>
 
         <div class="stats">
-            <div class="stat-box">
-                <span class="stat-number">10</span>
-                <span class="stat-label">Levels</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">∞</span>
-                <span class="stat-label">Sarcasm</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">1</span>
-                <span class="stat-label">Knife</span>
-            </div>
-            <div class="stat-box">
-                <span class="stat-number">12y</span>
-                <span class="stat-label">Isolation</span>
-            </div>
+            <div class="stat-box"><span class="stat-number">10</span><span class="stat-label">Levels</span></div>
+            <div class="stat-box"><span class="stat-number">∞</span><span class="stat-label">Sarcasm</span></div>
+            <div class="stat-box"><span class="stat-number">1</span><span class="stat-label">Knife</span></div>
+            <div class="stat-box"><span class="stat-number">12y</span><span class="stat-label">Isolation</span></div>
         </div>
 
         <div class="cta-section">
@@ -302,18 +259,17 @@
             }
         });
 
-        // Entrance animations
-        const observerOptions = { threshold: 0.1 };
+        // Simple Fade-in Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
                     entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
-                    observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        });
 
-        document.querySelectorAll('.story, .stats, .cta-section').forEach(el => {
+        document.querySelectorAll('.story, .stat-box, .cta-section').forEach(el => {
             el.style.opacity = '0';
             observer.observe(el);
         });
