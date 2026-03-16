@@ -1,280 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gary's: Intergalactic Booty Grab</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gary's: Intergalactic Booty Grab</title>
+	<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --title-blue: #70CFFF;
-            --off-white: #F5F5F5;
-            --deep-purple: #9D75CB;
-            --black: #000000;
-            --pixel-font: 'Press Start 2P', cursive;
-        }
+	<style>
+		:root {
+			--title-blue: #70CFFF;
+			--off-white: #F5F5F5;
+			--deep-purple: #9D75CB;
+			--black: #000000;
+			--pixel-font: 'Press Start 2P', cursive;
+		}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-        body {
-            background: var(--black);
-            color: var(--off-white);
-            font-family: var(--pixel-font);
-            overflow-x: hidden;
-            line-height: 1.8;
-            font-size: 12px;
-        }
+		/* --- LOADING SCREEN STYLES --- */
+		#loader {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: var(--black);
+			z-index: 9999;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			transition: opacity 0.5s ease;
+		}
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('background.png');
-            background-repeat: repeat;
-            image-rendering: pixelated;
-            background-size: 1280px 720px;
-            animation: drift 20s linear infinite;
-            z-index: -1;
-            opacity: 0.4;
-        }
+		.loader-text {
+			color: var(--title-blue);
+			font-size: 10px;
+			text-transform: uppercase;
+			letter-spacing: 2px;
+			margin-bottom: 20px;
+			animation: blink 0.2s infinite alternate;
+		}
 
-        @keyframes drift {
-            from { background-position: 0 0; }
-            to { background-position: -600px 600px; }
-        }
+		.loader-bar-container {
+			width: 200px;
+			height: 10px;
+			border: 2px solid var(--deep-purple);
+			padding: 2px;
+		}
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(157, 117, 203, 0.1),
-                rgba(157, 117, 203, 0.1) 1px,
-                transparent 1px,
-                transparent 3px
-            );
-            pointer-events: none;
-            z-index: 999;
-        }
+		.loader-bar {
+			width: 0%;
+			height: 100%;
+			background: var(--title-blue);
+			box-shadow: 0 0 10px var(--title-blue);
+			transition: width 0.1s linear;
+		}
 
-        header {
-            text-align: center;
-            padding: 60px 20px 20px;
-            max-width: 640px;
-            margin: 0 auto;
-        }
+		@keyframes blink {
+			from { opacity: 1; }
+			to { opacity: 0.7; }
+		}
 
-        .logo-container {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
-        }
+		/* --- CORE STYLES --- */
+		body {
+			background: var(--black);
+			color: var(--off-white);
+			font-family: var(--pixel-font);
+			overflow-x: hidden;
+			line-height: 1.8;
+			font-size: 12px;
+		}
 
-        .static-logo {
-            width: 640px;
-            height: auto;
-            image-rendering: pixelated; 
-            filter: drop-shadow(0 0 15px var(--deep-purple));
-            animation: float 4s ease-in-out infinite;
-        }
+		.stars {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-image: url('background.png');
+			background-repeat: repeat;
+			image-rendering: pixelated;
+			background-size: 1280px 720px;
+			animation: drift 20s linear infinite;
+			z-index: -1;
+			opacity: 0.4;
+		}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+		@keyframes drift {
+			from { background-position: 0 0; }
+			to { background-position: -600px 600px; }
+		}
 
-        .video-container {
-            text-align: center;
-            margin-top: 10px;
-        }
+		body::before {
+			content: '';
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: repeating-linear-gradient(
+				0deg,
+				rgba(157, 117, 203, 0.1),
+				rgba(157, 117, 203, 0.1) 1px,
+				transparent 1px,
+				transparent 3px
+			);
+			pointer-events: none;
+			z-index: 900;
+		}
 
-        .video-container video {
-            width: 640px;
-            max-width: 100%;
-            height: auto;
-            border: 4px solid var(--title-blue);
-            box-shadow: 0 0 25px rgba(112, 207, 255, 0.4);
-            image-rendering: pixelated;
-        }
+		header {
+			text-align: center;
+			padding: 60px 20px 20px;
+			max-width: 640px;
+			margin: 0 auto;
+		}
 
-        #unmute-message {
-            display: none;
-            text-align: center;
-            color: var(--title-blue);
-            font-size: 10px;
-            margin-top: 15px;
-            text-shadow: 0 0 10px var(--title-blue);
-        }
+		.logo-container {
+			margin-bottom: 30px;
+			display: flex;
+			justify-content: center;
+		}
 
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 0 20px 80px;
-        }
+		.static-logo {
+			width: 640px;
+			height: auto;
+			image-rendering: pixelated; 
+			filter: drop-shadow(0 0 15px var(--deep-purple));
+			animation: float 4s ease-in-out infinite;
+		}
 
-        .story {
-            background: rgba(157, 117, 203, 0.1);
-            border: 2px solid var(--deep-purple);
-            border-left: 6px solid var(--title-blue);
-            padding: 30px;
-            margin: 50px 0;
-            box-shadow: 0 0 20px rgba(157, 117, 203, 0.2);
-        }
+		@keyframes float {
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(-15px); }
+		}
 
-        .story p { margin-bottom: 25px; font-size: 11px; }
-        .story p strong { color: var(--title-blue); }
+		.video-container {
+			text-align: center;
+			margin-top: 10px;
+		}
 
-        .highlight-box {
-            color: var(--title-blue);
-            border: 1px dashed var(--deep-purple);
-            padding: 15px;
-            font-size: 10px;
-            text-align: center;
-            margin-bottom: 25px;
-            text-shadow: 0 0 5px var(--title-blue);
-        }
+		.video-container video {
+			width: 640px;
+			max-width: 100%;
+			height: auto;
+			border: 4px solid var(--title-blue);
+			box-shadow: 0 0 25px rgba(112, 207, 255, 0.4);
+			image-rendering: pixelated;
+		}
 
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin: 50px 0;
-        }
+		#unmute-message {
+			display: none;
+			text-align: center;
+			color: var(--title-blue);
+			font-size: 10px;
+			margin-top: 15px;
+			text-shadow: 0 0 10px var(--title-blue);
+		}
 
-        .stat-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--deep-purple);
-            padding: 20px;
-            text-align: center;
-            transition: border-color 0.3s ease;
-        }
+		.container {
+			max-width: 640px;
+			margin: 0 auto;
+			padding: 0 20px 80px;
+		}
 
-        .stat-box:hover {
-            border-color: var(--title-blue);
-        }
+		.story {
+			background: rgba(157, 117, 203, 0.1);
+			border: 2px solid var(--deep-purple);
+			border-left: 6px solid var(--title-blue);
+			padding: 30px;
+			margin: 50px 0;
+			box-shadow: 0 0 20px rgba(157, 117, 203, 0.2);
+		}
 
-        .stat-number {
-            font-size: 24px;
-            color: var(--title-blue);
-            display: block;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--title-blue);
-        }
+		.story p { margin-bottom: 25px; font-size: 11px; }
+		.story p strong { color: var(--title-blue); }
 
-        .stat-label {
-            color: var(--off-white);
-            font-size: 8px;
-            text-transform: uppercase;
-        }
+		.highlight-box {
+			color: var(--title-blue);
+			border: 1px dashed var(--deep-purple);
+			padding: 15px;
+			font-size: 10px;
+			text-align: center;
+			margin-bottom: 25px;
+			text-shadow: 0 0 5px var(--title-blue);
+		}
 
-        .cta-section {
-            text-align: center;
-            margin: 80px 0;
-        }
+		.stats {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 25px;
+			margin: 50px 0;
+		}
 
-        .cta-text {
-            font-size: 16px;
-            color: var(--title-blue);
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--title-blue);
-        }
+		.stat-box {
+			background: rgba(0, 0, 0, 0.6);
+			border: 2px solid var(--deep-purple);
+			padding: 20px;
+			text-align: center;
+			transition: border-color 0.3s ease;
+		}
 
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--deep-purple);
-            font-size: 8px;
-            border-top: 2px solid rgba(157, 117, 203, 0.3);
-            max-width: 640px;
-            margin: 60px auto 0;
-        }
+		.stat-box:hover {
+			border-color: var(--title-blue);
+		}
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+		.stat-number {
+			font-size: 24px;
+			color: var(--title-blue);
+			display: block;
+			margin-bottom: 10px;
+			text-shadow: 0 0 10px var(--title-blue);
+		}
+
+		.stat-label {
+			color: var(--off-white);
+			font-size: 8px;
+			text-transform: uppercase;
+		}
+
+		.cta-section {
+			text-align: center;
+			margin: 80px 0;
+		}
+
+		.cta-text {
+			font-size: 16px;
+			color: var(--title-blue);
+			letter-spacing: 2px;
+			text-shadow: 0 0 10px var(--title-blue);
+			margin-bottom: 30px;
+		}
+
+		.social-link {
+			display: inline-block;
+			color: var(--off-white);
+			text-decoration: none;
+			border: 2px solid var(--off-white);
+			padding: 15px 25px;
+			font-size: 10px;
+			transition: all 0.3s ease;
+			margin-top: 20px;
+		}
+
+		.social-link:hover {
+			background: var(--title-blue);
+			color: var(--black);
+			border-color: var(--title-blue);
+			box-shadow: 0 0 20px var(--title-blue);
+			transform: scale(1.05);
+		}
+
+		footer {
+			text-align: center;
+			padding: 40px 20px;
+			color: var(--deep-purple);
+			font-size: 8px;
+			border-top: 2px solid rgba(157, 117, 203, 0.3);
+			max-width: 640px;
+			margin: 60px auto 0;
+		}
+
+		@keyframes fadeInUp {
+			from { opacity: 0; transform: translateY(20px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+	</style>
 </head>
 <body>
-    <div class="stars"></div>
 
-    <header>
-        <div class="logo-container">
-            <img src="./logo.png" alt="Gary's: Intergalactic Booty Grab" class="static-logo">
-        </div>
+	<div id="loader">
+		<div class="loader-text">Initializing Gary_OS...</div>
+		<div class="loader-bar-container">
+			<div id="loader-progress" class="loader-bar"></div>
+		</div>
+	</div>
 
-        <div class="video-container">
-            <video id="gameplay-video" autoplay loop muted playsinline>
-                <source src="GarysGamePlayWebsite.mp4" type="video/mp4">
-            </video>
-        </div>
-        <div id="unmute-message">AUDIO FEED ACTIVE</div>
-    </header>
+	<div class="stars"></div>
 
-    <div class="container">
-        <div class="story">
-            <p><strong>The Storm is coming...</strong> The retrieval begins.
-            
-            <p>Gary's: Intergalactic Booty Grab is a 16-bit sci-fi platformer where a wisecracking cargo retrieval specialist starts running into strange anomalies below the surface of an abandoned facility.</p>
+	<header>
+		<div class="logo-container">
+			<img src="./logo.png" alt="Gary's: Intergalactic Booty Grab" class="static-logo">
+		</div>
 
-            <div class="highlight-box">
-                24 TREACHEROUS LEVELS. ONE RELENTLESS MISSION.
-            </div>
+		<div class="video-container">
+			<video id="gameplay-video" autoplay loop muted playsinline>
+				<source src="GarysGamePlayWebsite.mp4" type="video/mp4">
+			</video>
+		</div>
+		<div id="unmute-message">AUDIO FEED ACTIVE</div>
+	</header>
 
-            <p>It plays like a love letter to classic platformers, but feels like something else entirely by the time you're done. Navigate collapsing alien facilities, collect lost fortunes, and survive the anomalies of the Storm.</p>
-        </div>
+	<div class="container">
+		<div class="story">
+			<p><strong>The Storm is coming...</strong> The retrieval begins.</p>
+			<p>Gary's: Intergalactic Booty Grab is a 16-bit sci-fi platformer where a wisecracking cargo retrieval specialist starts running into strange anomalies below the surface of an abandoned facility.</p>
 
-        <div class="stats">
-            <div class="stat-box"><span class="stat-number">24</span><span class="stat-label">Levels</span></div>
-            <div class="stat-box"><span class="stat-number">∞</span><span class="stat-label">Sarcasm</span></div>
-            <div class="stat-box"><span class="stat-number">1</span><span class="stat-label">Specialist</span></div>
-            <div class="stat-box"><span class="stat-number">12y</span><span class="stat-label">Isolation</span></div>
-        </div>
+			<div class="highlight-box">
+				24 TREACHEROUS LEVELS. ONE RELENTLESS MISSION.
+			</div>
 
-        <div class="cta-section">
-            <div class="cta-text">Coming Soon to Steam</div>
-        </div>
-    </div>
+			<p>It plays like a love letter to classic platformers, but feels like something else entirely by the time you're done. Navigate collapsing alien facilities, collect lost fortunes, and survive the anomalies of the Storm.</p>
+		</div>
 
-    <footer>
-        <p>© 2026 Caminu Games. All coins belong to Gary.</p>
-    </footer>
+		<div class="stats">
+			<div class="stat-box"><span class="stat-number">24</span><span class="stat-label">Levels</span></div>
+			<div class="stat-box"><span class="stat-number">∞</span><span class="stat-label">Sarcasm</span></div>
+			<div class="stat-box"><span class="stat-number">1</span><span class="stat-label">Specialist</span></div>
+			<div class="stat-box"><span class="stat-number">12y</span><span class="stat-label">Isolation</span></div>
+		</div>
 
-    <script>
-        const video = document.getElementById('gameplay-video');
-        const message = document.getElementById('unmute-message');
+		<div class="cta-section">
+			<div class="cta-text">Coming Soon to Steam</div>
+			<a href="https://www.youtube.com/@CaminuGames" target="_blank" class="social-link">VIEW DEVELOPMENT LOGS</a>
+		</div>
+	</div>
 
-        video.addEventListener('volumechange', () => {
-            if (!video.muted && video.volume > 0) {
-                message.style.display = 'block';
-            }
-        });
+	<footer>
+		<p>© 2026 Caminu Games. All coins belong to Gary.</p>
+	</footer>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
-                }
-            });
-        });
+	<script>
+		// --- Loader Script ---
+		window.addEventListener('load', () => {
+			const loader = document.getElementById('loader');
+			const progressBar = document.getElementById('loader-progress');
+			let width = 0;
+			
+			// Simple faux-loading interval for "boot-up" feel
+			const interval = setInterval(() => {
+				if (width >= 100) {
+					clearInterval(interval);
+					loader.style.opacity = '0';
+					setTimeout(() => loader.style.display = 'none', 500);
+				} else {
+					width += Math.random() * 15;
+					if (width > 100) width = 100;
+					progressBar.style.width = width + '%';
+				}
+			}, 100);
+		});
 
-        document.querySelectorAll('.story, .stat-box, .cta-section').forEach(el => {
-            el.style.opacity = '0';
-            observer.observe(el);
-        });
-    </script>
+		// --- Gameplay Video Script ---
+		const video = document.getElementById('gameplay-video');
+		const message = document.getElementById('unmute-message');
+
+		video.addEventListener('volumechange', () => {
+			if (!video.muted && video.volume > 0) {
+				message.style.display = 'block';
+			}
+		});
+
+		// --- Scroll Animations ---
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.style.opacity = '1';
+					entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+				}
+			});
+		});
+
+		document.querySelectorAll('.story, .stat-box, .cta-section').forEach(el => {
+			el.style.opacity = '0';
+			observer.observe(el);
+		});
+	</script>
 </body>
 </html>
 
